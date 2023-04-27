@@ -4,5 +4,5 @@ plugins {
 }
 
 unmeta {
-    message.set("Just trying this gradle plugin...")
+    isEnabled.set(true)
 }

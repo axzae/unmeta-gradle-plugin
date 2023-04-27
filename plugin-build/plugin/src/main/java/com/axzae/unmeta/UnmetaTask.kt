@@ -1,14 +1,11 @@
 package com.axzae.unmeta
 
 import org.gradle.api.DefaultTask
-import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.plugins.BasePlugin
-import org.gradle.api.provider.Property
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Optional
-import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
-import org.gradle.api.tasks.options.Option
+import org.objectweb.asm.ClassReader
+import org.objectweb.asm.ClassWriter
+import java.io.File
 
 abstract class UnmetaTask : DefaultTask() {
 
@@ -17,26 +14,29 @@ abstract class UnmetaTask : DefaultTask() {
         group = BasePlugin.BUILD_GROUP
     }
 
-    @get:Input
-    @get:Option(option = "message", description = "A message to be printed in the output file")
-    abstract val message: Property<String>
-
-    @get:Input
-    @get:Option(option = "tag", description = "A Tag to be used for debug and in the output file")
-    @get:Optional
-    abstract val tag: Property<String>
-
-    @get:OutputFile
-    abstract val outputFile: RegularFileProperty
-
     @TaskAction
     fun unmetaAction() {
-        val prettyTag = tag.orNull?.let { "[$it]" } ?: ""
+        if (!isEnabled) {
+            logger.warn("unmeta is disabled")
+            return
+        }
 
-        logger.lifecycle("$prettyTag message is: ${message.orNull}")
-        logger.lifecycle("$prettyTag tag is: ${tag.orNull}")
-        logger.lifecycle("$prettyTag outputFile is: ${outputFile.orNull}")
+        logger.info("Start dropping @Metadata & @DebugMetadata from kotlin classes")
+        project.buildDir.listFiles()?.forEach { file -> if (file.isDirectory) dropMetadata(file) }
+    }
 
-        outputFile.get().asFile.writeText("$prettyTag ${message.get()}")
+    private fun dropMetadata(directory: File) {
+        directory.walk()
+            .filter { it.path.contains("classes") && it.path.endsWith(".class") && it.isFile }
+            .forEach {
+                val sourceClassBytes = it.readBytes()
+                val classReader = ClassReader(sourceClassBytes)
+                val classWriter = ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
+                val unmetaClassVisitor = UnmetaClassVisitor(it.absolutePath, classWriter, logger)
+                classReader.accept(unmetaClassVisitor, ClassReader.SKIP_DEBUG)
+                if (unmetaClassVisitor.modified) {
+                    it.writeBytes(classWriter.toByteArray())
+                }
+            }
     }
 }
