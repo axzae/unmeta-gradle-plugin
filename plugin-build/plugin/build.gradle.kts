@@ -10,6 +10,7 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(gradleApi())
     implementation(libs.asm)
+    implementation(libs.androidGradlePlugin)
 
     testImplementation(libs.junit)
     testImplementation(libs.truth)

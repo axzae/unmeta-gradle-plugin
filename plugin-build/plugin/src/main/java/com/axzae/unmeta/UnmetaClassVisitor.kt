@@ -1,35 +1,25 @@
 package com.axzae.unmeta
 
-import org.gradle.api.logging.Logger
 import org.objectweb.asm.AnnotationVisitor
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.Opcodes
 
 class UnmetaClassVisitor(
-    private val path: String,
+    val path: String,
     classVisitor: ClassVisitor,
-    private val logger: Logger,
 ) : ClassVisitor(Opcodes.ASM7, classVisitor), Opcodes {
 
-    var modified = false
+    var isModified = false
+        private set
 
-    override fun visitAnnotation(desc: String?, visible: Boolean): AnnotationVisitor? {
-        return when (desc) {
-            "Lkotlin/Metadata;" -> {
-                logger.debug("Removed @Metadata annotation from $path")
-                modified = true
-                null
-            }
-
+    override fun visitAnnotation(descriptor: String?, visible: Boolean): AnnotationVisitor? {
+        return when (descriptor) {
             "Lkotlin/coroutines/jvm/internal/DebugMetadata;" -> {
-                logger.debug("Removed @DebugMetadata annotation from $path")
-                modified = true
+                isModified = true
                 null
             }
 
-            else -> {
-                super.visitAnnotation(desc, visible)
-            }
+            else -> super.visitAnnotation(descriptor, visible)
         }
     }
 }

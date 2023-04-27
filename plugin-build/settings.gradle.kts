@@ -31,6 +31,4 @@ gradleEnterprise {
     }
 }
 
-rootProject.name = ("com.axzae.unmeta")
-
 include(":plugin")
