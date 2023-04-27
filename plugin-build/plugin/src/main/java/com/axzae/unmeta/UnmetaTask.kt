@@ -1,7 +1,8 @@
-package com.ncorti.kotlin.gradle.template.plugin
+package com.axzae.unmeta
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
@@ -9,13 +10,11 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.options.Option
 
-abstract class TemplateExampleTask : DefaultTask() {
+abstract class UnmetaTask : DefaultTask() {
 
     init {
-        description = "Just a sample template task"
-
-        // Don't forget to set the group here.
-        // group = BasePlugin.BUILD_GROUP
+        description = "Drop Kotlin @DebugMetadata from java classes"
+        group = BasePlugin.BUILD_GROUP
     }
 
     @get:Input
@@ -31,7 +30,7 @@ abstract class TemplateExampleTask : DefaultTask() {
     abstract val outputFile: RegularFileProperty
 
     @TaskAction
-    fun sampleAction() {
+    fun unmetaAction() {
         val prettyTag = tag.orNull?.let { "[$it]" } ?: ""
 
         logger.lifecycle("$prettyTag message is: ${message.orNull}")

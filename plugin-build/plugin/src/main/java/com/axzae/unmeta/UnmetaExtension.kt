@@ -1,4 +1,4 @@
-package com.ncorti.kotlin.gradle.template.plugin
+package com.axzae.unmeta
 
 import org.gradle.api.Project
 import org.gradle.api.file.RegularFileProperty
@@ -8,7 +8,7 @@ import javax.inject.Inject
 const val DEFAULT_OUTPUT_FILE = "template-example.txt"
 
 @Suppress("UnnecessaryAbstractClass")
-abstract class TemplateExtension @Inject constructor(project: Project) {
+abstract class UnmetaExtension @Inject constructor(project: Project) {
 
     private val objects = project.objects
 
@@ -21,6 +21,6 @@ abstract class TemplateExtension @Inject constructor(project: Project) {
 
     // Example of a property with a default set with .convention
     val outputFile: RegularFileProperty = objects.fileProperty().convention(
-        project.layout.buildDirectory.file(DEFAULT_OUTPUT_FILE)
+        project.layout.buildDirectory.file(DEFAULT_OUTPUT_FILE),
     )
 }

@@ -25,7 +25,7 @@ gradleEnterprise {
     }
 }
 
-rootProject.name = "kotlin-gradle-plugin-template"
+rootProject.name = "unmeta-gradle-plugin"
 
 include(":example")
 includeBuild("plugin-build")

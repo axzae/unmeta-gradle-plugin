@@ -1,8 +1,8 @@
 plugins {
     java
-    id("com.ncorti.kotlin.gradle.template.plugin")
+    id("com.axzae.unmeta")
 }
 
-templateExampleConfig {
+unmeta {
     message.set("Just trying this gradle plugin...")
 }
