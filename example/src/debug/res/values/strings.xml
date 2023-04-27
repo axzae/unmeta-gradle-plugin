@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Unmeta Plugin Debug</string>
+    <string name="hello_text">Hello from Debug</string>
+</resources>

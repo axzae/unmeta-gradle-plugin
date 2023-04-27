@@ -15,6 +15,7 @@ dependencyResolutionManagement {
 
 plugins {
     `gradle-enterprise`
+    id("com.android.application") version "7.3.0" apply false
 }
 
 gradleEnterprise {
