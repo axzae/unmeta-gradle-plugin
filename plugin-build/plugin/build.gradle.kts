@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    signing
     kotlin("jvm")
     `java-gradle-plugin`
     alias(libs.plugins.pluginPublish)
@@ -19,6 +20,13 @@ dependencies {
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+signing {
+    val signingKey = System.getenv("GPG_SIGNING_KEY")
+    val signingPassword = System.getenv("GPG_SIGNING_PASSWORD")
+    useInMemoryPgpKeys(signingKey.chunked(64).joinToString("\n"), signingPassword)
+    sign(tasks["jar"])
 }
 
 tasks.withType<KotlinCompile> {
