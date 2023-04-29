@@ -27,12 +27,12 @@ that the Unmeta plugin must be applied after the Android plugin.
 ```kotlin
 // Project build.gradle.kts
 plugins {
-  id("com.axzae.unmeta") version "1.0.0" apply false
+  id("com.axzae.unmeta") version "1.1.0" apply false
 }
 
 // Module(app) build.gradle.kts
 plugins {
-  id("com.android.application")
+  // id("com.android.application")
   // ...
   id("com.axzae.unmeta")
 }
@@ -45,13 +45,13 @@ plugins {
 // Project build.gradle.kts
 buildscript {
   dependencies {
-    classpath("com.axzae:unmeta:1.0.0")
+    classpath("com.axzae:unmeta:1.1.0")
   }
 }
 
 // Module(app) build.gradle.kts
 plugins {
-  id("com.android.application")
+  // id("com.android.application")
   // ...
   id("com.axzae.unmeta")
 }
@@ -75,17 +75,17 @@ Generated task report is located at `$BUILD_DIR/outputs/logs/unmeta-report.txt`
 
 ```
 Start dropping @DebugMetadata from kotlin classes
-  Removed @DebugMetadata annotation from com\example\main\MainActivity$greetings$2.class
-  Removed @DebugMetadata annotation from com\example\main\MainActivity$onCreate$2.class
+- Removed @DebugMetadata annotation from com\example\main\MainActivity$greetings$2.class
+- Removed @DebugMetadata annotation from com\example\main\MainActivity$onCreate$2.class
 Task finished.
 Class files scanned: 7
-Class files modified: 7
+Class files modified: 2
 Execution time: 12ms.
 ```
 
 ## Contributing
 
-Feel free to open a issue or submit a pull request for any bugs/improvements.
+Feel free to open an issue or submit a pull request for any bugs/improvements.
 
 ## License
 
