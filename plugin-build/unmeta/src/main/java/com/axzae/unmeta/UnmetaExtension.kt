@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 const val DEFAULT_IS_ENABLED = true
 const val DEFAULT_VERBOSE = false
-const val DEFAULT_OUTPUT_FILE = "outputs/logs/unmeta.txt"
+const val DEFAULT_OUTPUT_FILE = "outputs/logs/unmeta-report.txt"
 
 @Suppress("UnnecessaryAbstractClass")
 abstract class UnmetaExtension @Inject constructor(project: Project) {

@@ -31,7 +31,14 @@ abstract class UnmetaTask : DefaultTask() {
     @get:OutputFile
     abstract val outputFile: RegularFileProperty
 
-    private val fileLogger by lazy { outputFile.get().asFile }
+    private val fileLogger by lazy {
+        outputFile.get().asFile.apply {
+            writeText("", Charsets.UTF_8)
+        }
+    }
+
+    private var scannedFiles = 0
+    private var modifiedFiles = 0
 
     @TaskAction
     fun unmetaAction() {
@@ -41,12 +48,20 @@ abstract class UnmetaTask : DefaultTask() {
         }
         log("Start dropping @DebugMetadata from kotlin classes")
         val executionMs = measureTimeMillis {
-            val kotlinClassesPath = project.buildDir.absolutePath + "/tmp/kotlin-classes/${variantName.get()}"
-            File(kotlinClassesPath).listFiles()?.forEach { file ->
-                if (file.isDirectory) removeAnnotation(file)
-            }
+            val kotlinClassesBasePathName = project.buildDir.absolutePath + "/tmp/kotlin-classes/${variantName.get()}"
+            val kotlinClassesBasePath = File(kotlinClassesBasePathName)
+            kotlinClassesBasePath.listFiles()
+                ?.filter { it.isDirectory }
+                ?.forEach { directory -> removeAnnotation(directory, kotlinClassesBasePath) }
         }
-        log("Unmeta Total Time: ${executionMs}ms")
+        log(
+            listOf(
+                "Task finished.",
+                "Class files scanned: $scannedFiles",
+                "Class files modified: $modifiedFiles",
+                "Execution time: ${executionMs}ms.",
+            ).joinToString("\n"),
+        )
     }
 
     private fun log(message: String) {
@@ -57,17 +72,19 @@ abstract class UnmetaTask : DefaultTask() {
         fileLogger.appendText(message + System.lineSeparator(), Charsets.UTF_8)
     }
 
-    private fun removeAnnotation(directory: File) {
+    private fun removeAnnotation(directory: File, basePath: File) {
         directory.walk()
             .filter { it.path.contains("classes") && it.path.endsWith(".class") && it.isFile }
             .forEach {
+                ++scannedFiles
                 val sourceClassBytes = it.readBytes()
                 val classReader = ClassReader(sourceClassBytes)
                 val classWriter = ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
-                val unmetaClassVisitor = UnmetaClassVisitor(it.absolutePath, classWriter)
+                val unmetaClassVisitor = UnmetaClassVisitor(classWriter)
                 classReader.accept(unmetaClassVisitor, ClassReader.SKIP_DEBUG)
                 if (unmetaClassVisitor.isModified) {
-                    log("Removed @DebugMetadata annotation from ${unmetaClassVisitor.path}")
+                    ++modifiedFiles
+                    log("- Removed @DebugMetadata annotation from ${it.toRelativeString(basePath)}")
                     it.writeBytes(classWriter.toByteArray())
                 }
             }

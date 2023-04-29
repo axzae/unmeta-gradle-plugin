@@ -5,7 +5,6 @@ import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.Opcodes
 
 class UnmetaClassVisitor(
-    val path: String,
     classVisitor: ClassVisitor,
 ) : ClassVisitor(Opcodes.ASM7, classVisitor), Opcodes {
 

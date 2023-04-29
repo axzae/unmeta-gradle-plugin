@@ -69,6 +69,20 @@ unmeta {
 }
 ```
 
+## Report
+
+Generated task report is located at `$BUILD_DIR/outputs/logs/unmeta-report.txt`
+
+```
+Start dropping @DebugMetadata from kotlin classes
+  Removed @DebugMetadata annotation from com\example\main\MainActivity$greetings$2.class
+  Removed @DebugMetadata annotation from com\example\main\MainActivity$onCreate$2.class
+Task finished.
+Class files scanned: 7
+Class files modified: 7
+Execution time: 12ms.
+```
+
 ## Contributing
 
 Feel free to open a issue or submit a pull request for any bugs/improvements.
