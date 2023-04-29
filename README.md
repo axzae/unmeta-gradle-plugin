@@ -45,12 +45,22 @@ plugins {
 // Project build.gradle.kts
 buildscript {
   dependencies {
-    classpath("com.axzae.unmeta:com.axzae.unmeta.gradle.plugin:1.0.0")
+    classpath("com.axzae:unmeta:1.0.0")
   }
+}
+
+// Module(app) build.gradle.kts
+plugins {
+  id("com.android.application")
+  // ...
+  id("com.axzae.unmeta")
 }
 ```
 
 ## Configuration
+
+Unmeta task is bound to all release builds by default hence configuration is optional.
+However, the lib does expose a few configurable properties:
 
 ```kotlin
 unmeta {
@@ -86,7 +96,6 @@ Feel free to open a issue or submit a pull request for any bugs/improvements.
     SOFTWARE.
 
 [1]: https://github.com/Kotlin/kotlinx.coroutines/issues/2267#issuecomment-698826645
-
 [debugmetadata]: https://github.com/JetBrains/kotlin/blob/master/libraries/stdlib/jvm/src/kotlin/coroutines/jvm/internal/DebugMetadata.kt
 [pluginportal]: https://plugins.gradle.org/plugin/com.axzae.unmeta
 [actions]: https://github.com/axzae/unmeta-gradle-plugin/actions
