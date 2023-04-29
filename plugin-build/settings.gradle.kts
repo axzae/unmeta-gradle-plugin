@@ -31,4 +31,4 @@ gradleEnterprise {
     }
 }
 
-include(":plugin")
+include(":unmeta")
