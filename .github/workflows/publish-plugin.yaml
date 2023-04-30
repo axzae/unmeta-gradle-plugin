@@ -29,3 +29,6 @@ jobs:
       - name: Publish on Plugin Portal
         run: ./gradlew --project-dir plugin-build setupPluginUploadFromEnvironment publishPlugins
         if: success()
+      - name: Publish on Maven Central
+        run: ./gradlew --project-dir plugin-build publishMavenJavaPublicationToMavenRepository
+        if: success()

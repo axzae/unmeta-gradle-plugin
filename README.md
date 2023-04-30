@@ -3,7 +3,9 @@
 <p>
 
 [![build](https://img.shields.io/github/actions/workflow/status/axzae/unmeta-gradle-plugin/pre-merge.yaml?branch=main)][actions]
+[![github tag](https://img.shields.io/github/v/tag/axzae/unmeta-gradle-plugin?label=github)][releases]
 [![plugin portal](https://img.shields.io/gradle-plugin-portal/v/com.axzae.unmeta)][pluginportal]
+[![maven central](https://img.shields.io/maven-central/v/com.axzae/unmeta)][mavencentral]
 
 </p>
 
@@ -112,4 +114,6 @@ Feel free to open an issue or submit a pull request for any bugs/improvements.
 [1]: https://github.com/Kotlin/kotlinx.coroutines/issues/2267#issuecomment-698826645
 [debugmetadata]: https://github.com/JetBrains/kotlin/blob/master/libraries/stdlib/jvm/src/kotlin/coroutines/jvm/internal/DebugMetadata.kt
 [pluginportal]: https://plugins.gradle.org/plugin/com.axzae.unmeta
+[mavencentral]: https://central.sonatype.com/artifact/com.axzae/unmeta
 [actions]: https://github.com/axzae/unmeta-gradle-plugin/actions
+[releases]: https://github.com/axzae/unmeta-gradle-plugin/releases
