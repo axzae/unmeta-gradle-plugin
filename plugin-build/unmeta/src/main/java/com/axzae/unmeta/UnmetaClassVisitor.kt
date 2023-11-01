@@ -6,7 +6,7 @@ import org.objectweb.asm.Opcodes
 
 class UnmetaClassVisitor(
     classVisitor: ClassVisitor,
-) : ClassVisitor(Opcodes.ASM7, classVisitor), Opcodes {
+) : ClassVisitor(Opcodes.ASM9, classVisitor), Opcodes {
 
     var isModified = false
         private set
