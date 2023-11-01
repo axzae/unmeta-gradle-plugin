@@ -29,7 +29,7 @@ that the Unmeta plugin must be applied after the Android plugin.
 ```kotlin
 // Project build.gradle.kts
 plugins {
-  id("com.axzae.unmeta") version "1.1.0" apply false
+  id("com.axzae.unmeta") version "1.2.0" apply false
 }
 
 // Module(app) build.gradle.kts
@@ -47,7 +47,7 @@ plugins {
 // Project build.gradle.kts
 buildscript {
   dependencies {
-    classpath("com.axzae:unmeta:1.1.0")
+    classpath("com.axzae:unmeta:1.2.0")
   }
 }
 
