@@ -72,20 +72,31 @@ abstract class UnmetaTask : DefaultTask() {
         fileLogger.appendText(message + System.lineSeparator(), Charsets.UTF_8)
     }
 
+    private fun logError(message: String) {
+        logger.error(message)
+        fileLogger.appendText(message + System.lineSeparator(), Charsets.UTF_8)
+    }
+
     private fun removeAnnotation(directory: File, basePath: File) {
         directory.walk()
             .filter { it.path.contains("classes") && it.path.endsWith(".class") && it.isFile }
             .forEach {
-                ++scannedFiles
-                val sourceClassBytes = it.readBytes()
-                val classReader = ClassReader(sourceClassBytes)
-                val classWriter = ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
-                val unmetaClassVisitor = UnmetaClassVisitor(classWriter)
-                classReader.accept(unmetaClassVisitor, ClassReader.SKIP_DEBUG)
-                if (unmetaClassVisitor.isModified) {
-                    ++modifiedFiles
-                    log("- Removed @DebugMetadata annotation from ${it.toRelativeString(basePath)}")
-                    it.writeBytes(classWriter.toByteArray())
+                try {
+                    ++scannedFiles
+                    val sourceClassBytes = it.readBytes()
+                    val classReader = ClassReader(sourceClassBytes)
+                    val classWriter = ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
+                    val unmetaClassVisitor = UnmetaClassVisitor(classWriter)
+                    classReader.accept(unmetaClassVisitor, ClassReader.SKIP_DEBUG)
+                    if (unmetaClassVisitor.isModified) {
+                        ++modifiedFiles
+                        log("- Removed @DebugMetadata annotation from ${it.toRelativeString(basePath)}")
+                        it.writeBytes(classWriter.toByteArray())
+                    }
+                } catch (e: UnsupportedOperationException) {
+                    // Suppress error for unreadable classes
+                    // PermittedSubclasses requires ASM9
+                    logError("- Error ${it.toRelativeString(basePath)}: $e")
                 }
             }
     }
